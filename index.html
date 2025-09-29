@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Places Finder | Discover Your World</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Enhanced Header -->
+    <header class="enhanced-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Online Places Finder</h1>
+                    <p>Discover your world</p>
+                </div>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="#" class="active" data-section="home">Home</a>
+                <a href="#" data-section="explore">Explore</a>
+                <a href="#" data-section="collections">Collections</a>
+                <a href="#" data-section="blog">Blog</a>
+            </nav>
+            
+            <div class="user-actions">
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                    <button class="btn btn-outline" id="logoutBtn">Logout</button>
+                </div>
+                <div id="authButtons">
+                    <button class="btn btn-outline" id="signInBtn">Sign In</button>
+                    <button class="btn btn-primary" id="getStartedBtn">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-content">
+                <h2>Find the Perfect Place, Anytime, Anywhere</h2>
+                <p>Discover restaurants, schools, attractions and more with our intelligent location finder</p>
+            </div>
+        </div>
+
+        <!-- Advanced Search -->
+        <section class="advanced-search">
+            <div class="search-tabs">
+                <div class="search-tab active" data-search-type="basic">Basic Search</div>
+                <div class="search-tab" data-search-type="advanced">Advanced Search</div>
+                <div class="search-tab" data-search-type="voice">Voice Search</div>
+                <div class="search-tab" data-search-type="image">Image Search</div>
+            </div>
+            
+            <form class="search-form" id="searchForm">
+                <!-- Basic Search Form (default) -->
+                <div class="form-group">
+                    <label for="location"><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <input type="text" id="location" placeholder="Enter city or address" value="New York">
+                </div>
+                
+                <div class="form-group">
+                    <label for="placeType"><i class="fas fa-search"></i> What are you looking for?</label>
+                    <select id="placeType">
+                        <option value="all">All Places</option>
+                        <option value="restaurants">Restaurants</option>
+                        <option value="accomodations">Hotels</option>
+                        <option value="museums">Museums</option>
+                        <option value="interesting_places">Tourist Attractions</option>
+                        <option value="religion">Religious Places</option>
+                        <option value="amusements">Entertainment</option>
+                        <option value="natural">Natural Places</option>
+                        <option value="cultural">Cultural Places</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="filters"><i class="fas fa-filter"></i> Filters</label>
+                    <select id="filters">
+                        <option value="all">All Filters</option>
+                        <option value="rating">Top Rated</option>
+                        <option value="distance">Nearest</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+            
+            <!-- Loading Spinner -->
+            <div class="loading" id="searchLoading">
+                <div class="spinner"></div>
+                <p>Searching for places...</p>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="section-title">
+                <h2>Why Choose Online Places Finder?</h2>
+                <p>Our platform offers cutting-edge features to enhance your location discovery experience</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI-Powered Search</h3>
+                    <p>Our intelligent algorithms understand your preferences and suggest perfect matches</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Advanced Mapping</h3>
+                    <p>Interactive maps with real-time location tracking and detailed place information</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Social Discovery</h3>
+                    <p>See where your friends are going and get personalized recommendations</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-vr-cardboard"></i>
+                    </div>
+                    <h3>Rich Content</h3>
+                    <p>Access detailed information, images, and descriptions for every place</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Real-time Info</h3>
+                    <p>Get up-to-date information about opening hours and current status</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-universal-access"></i>
+                    </div>
+                    <h3>Accessibility Focus</h3>
+                    <p>Detailed accessibility information for users with disabilities</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="map-section">
+            <div class="section-title">
+                <h2>Interactive Mapping Experience</h2>
+                <p>Explore locations with our advanced mapping technology</p>
+            </div>
+            
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-overlay">
+                    <h3>Interactive Map</h3>
+                    <p>Search for locations to see them visualized on our mapping system with detailed information.</p>
+                    <button class="btn btn-primary" id="exploreMapBtn">Explore Map</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section">
+            <div class="section-title">
+                <h2>Popular Places</h2>
+                <p>Discover some of the most searched locations in your area</p>
+            </div>
+            
+            <div class="results-grid" id="resultsGrid">
+                <!-- Results will be populated by JavaScript -->
+            </div>
+        </section>
+    </section>
+
+    <!-- User Dashboard Section (Visible after login) -->
+    <section id="userDashboard" class="section" style="display: none;">
+        <div class="user-dashboard">
+            <div class="dashboard-header">
+                <div class="dashboard-welcome">
+                    <div class="dashboard-avatar" id="dashboardAvatar">U</div>
+                    <div>
+                        <h2>Welcome, <span id="dashboardUserName">User</span>!</h2>
+                        <p>Manage your account and preferences</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="backToHomeBtn">Back to Home</button>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: var(--secondary);">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Saved Places</h3>
+                    <p>Access your favorite locations and recently viewed places</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: var(--primary);">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Search History</h3>
+                    <p>Review your previous searches and location queries</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: var(--warning);">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3>Preferences</h3>
+                    <p>Customize your search preferences and notification settings</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explore Section -->
+    <section id="explore" class="section" style="display: none;">
+        <div class="hero" style="background: linear-gradient(rgba(52, 168, 83, 0.9), rgba(52, 168, 83, 0.8)), url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
+            <div class="hero-content">
+                <h2>Explore Amazing Places</h2>
+                <p>Discover hidden gems and popular spots around the world</p>
+            </div>
+        </div>
+        
+        <div class="features" style="padding-top: 2rem;">
+            <div class="section-title">
+                <h2>Featured Categories</h2>
+                <p>Browse places by category to find exactly what you're looking for</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card" data-category="restaurants">
+                    <div class="feature-icon" style="background: var(--accent);">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Restaurants</h3>
+                    <p>Find the best dining experiences from casual cafes to fine dining</p>
+                </div>
+                
+                <div class="feature-card" data-category="accomodations">
+                    <div class="feature-icon" style="background: var(--primary);">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <h3>Hotels</h3>
+                    <p>Discover comfortable accommodations for your stay</p>
+                </div>
+                
+                <div class="feature-card" data-category="museums">
+                    <div class="feature-icon" style="background: var(--secondary);">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>Museums</h3>
+                    <p>Explore cultural and historical institutions</p>
+                </div>
+                
+                <div class="feature-card" data-category="amusements">
+                    <div class="feature-icon" style="background: var(--warning);">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <h3>Entertainment</h3>
+                    <p>Find cinemas, theaters, and entertainment venues</p>
+                </div>
+                
+                <div class="feature-card" data-category="religion">
+                    <div class="feature-icon" style="background: #9c27b0;">
+                        <i class="fas fa-place-of-worship"></i>
+                    </div>
+                    <h3>Religious Places</h3>
+                    <p>Discover churches, temples, mosques, and other sacred sites</p>
+                </div>
+                
+                <div class="feature-card" data-category="natural">
+                    <div class="feature-icon" style="background: #4caf50;">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <h3>Natural Places</h3>
+                    <p>Explore parks, trails, and natural attractions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collections Section -->
+    <section id="collections" class="section" style="display: none;">
+        <div class="hero" style="background: linear-gradient(rgba(251, 188, 5, 0.9), rgba(251, 188, 5, 0.8)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
+            <div class="hero-content">
+                <h2>Curated Collections</h2>
+                <p>Explore hand-picked collections of amazing places</p>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <div class="section-title">
+                <h2>Featured Collections</h2>
+                <p>Browse our curated collections of must-visit places</p>
+            </div>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-image" style="background-image: url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                        <div class="result-image-overlay">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                    </div>
+                    <div class="result-content">
+                        <h3 class="result-title">Best Rooftop Restaurants</h3>
+                        <p class="result-details">Enjoy dining with a view at these amazing rooftop restaurants with panoramic cityscapes.</p>
+                        <div class="result-meta">
+                            <span>12 places</span>
+                            <span>Curated by Food Experts</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-image" style="background-image: url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                        <div class="result-image-overlay">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                    </div>
+                    <div class="result-content">
+                        <h3 class="result-title">Historical Landmarks</h3>
+                        <p class="result-details">Step back in time and explore these significant historical sites and monuments.</p>
+                        <div class="result-meta">
+                            <span>15 places</span>
+                            <span>Cultural Heritage</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-image" style="background-image: url('https://images.unsplash.com/photo-1571624436279-b272aff752b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                        <div class="result-image-overlay">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                    </div>
+                    <div class="result-content">
+                        <h3 class="result-title">Natural Wonders</h3>
+                        <p class="result-details">Discover breathtaking natural landscapes and scenic viewpoints.</p>
+                        <div class="result-meta">
+                            <span>10 places</span>
+                            <span>Nature Exploration</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="section" style="display: none;">
+        <div class="hero" style="background: linear-gradient(rgba(234, 67, 53, 0.9), rgba(234, 67, 53, 0.8)), url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
+            <div class="hero-content">
+                <h2>Travel & Discovery Blog</h2>
+                <p>Read stories, tips, and guides about amazing places around the world</p>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <div class="section-title">
+                <h2>Latest Articles</h2>
+                <p>Discover new places through our travel stories and guides</p>
+            </div>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-image" style="background-image: url('https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                        <div class="result-image-overlay">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                    </div>
+                    <div class="result-content">
+                        <h3 class="result-title">10 Hidden Mountain Trails You Need to Explore</h3>
+                        <p class="result-details">Discover breathtaking mountain trails that offer stunning views and peaceful hiking experiences away from the crowds.</p>
+                        <div class="result-meta">
+                            <span>Travel</span>
+                            <span>5 min read</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-image" style="background-image: url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                        <div class="result-image-overlay">
+                            <i class="fas fa-city"></i>
+                        </div>
+                    </div>
+                    <div class="result-content">
+                        <h3 class="result-title">Urban Exploration: Finding Beauty in Cityscapes</h3>
+                        <p class="result-details">How to discover the hidden architectural gems and unique perspectives in bustling metropolitan areas.</p>
+                        <div class="result-meta">
+                            <span>City Guides</span>
+                            <span>7 min read</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-image" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                        <div class="result-image-overlay">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                    </div>
+                    <div class="result-content">
+                        <h3 class="result-title">A Food Lover's Guide to Street Food Capitals</h3>
+                        <p class="result-details">Explore the world's best street food destinations and what to try in each location for an authentic culinary experience.</p>
+                        <div class="result-meta">
+                            <span>Food & Drink</span>
+                            <span>10 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Place Details Modal -->
+    <div class="modal" id="placeDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalPlaceName">Place Name</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="place-details">
+                    <div class="place-image" id="modalPlaceImage"></div>
+                    <div class="place-info">
+                        <h3>About</h3>
+                        <p id="modalPlaceDescription">Place description will appear here.</p>
+                        
+                        <div class="place-features" id="modalPlaceFeatures">
+                            <!-- Features will be populated by JavaScript -->
+                        </div>
+                        
+                        <h3>Location & Contact</h3>
+                        <p id="modalPlaceAddress">Address information</p>
+                        <p id="modalPlaceContact">Contact information</p>
+                        
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" id="getDirectionsBtn">
+                                <i class="fas fa-route"></i> Get Directions
+                            </button>
+                            <button class="btn btn-outline" id="savePlaceBtn">
+                                <i class="far fa-bookmark"></i> Save Place
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="modal auth-modal" id="authModal">
+        <div class="modal-content">
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-auth-type="signin">Sign In</div>
+                <div class="auth-tab" data-auth-type="signup">Sign Up</div>
+            </div>
+            <div class="auth-form">
+                <form id="signInForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                        <div class="form-error" id="emailError">Please enter a valid email</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password">
+                        <div class="form-error" id="passwordError">Please enter your password</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+                </form>
+                
+                <form id="signUpForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Enter your full name">
+                        <div class="form-error" id="fullNameError">Please enter your full name</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email">
+                        <div class="form-error" id="signupEmailError">Please enter a valid email</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password">
+                        <div class="form-error" id="signupPasswordError">Password must be at least 6 characters</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                        <div class="form-error" id="confirmPasswordError">Passwords do not match</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="enhanced-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Online Places Finder</h3>
+                <p>Discover your world with our advanced location finder platform.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#" data-section="home">Home</a></li>
+                    <li><a href="#" data-section="explore">Explore</a></li>
+                    <li><a href="#" data-section="collections">Collections</a></li>
+                    <li><a href="#" data-section="blog">Blog</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="#" data-category="restaurants">Restaurants</a></li>
+                    <li><a href="#" data-category="accomodations">Hotels</a></li>
+                    <li><a href="#" data-category="museums">Museums</a></li>
+                    <li><a href="#" data-category="interesting_places">Attractions</a></li>
+                    <li><a href="#" data-category="natural">Natural Places</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> info@onlineplacesfinder.com</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Discovery Street, Tech City</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 Online Places Finder. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
